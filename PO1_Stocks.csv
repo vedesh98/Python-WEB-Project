@@ -1,4 +1,4 @@
-RSI,symbol,sl_pct,total_trades,winning_trades,losing_trades,win_ratio,priority
+rsi,symbol,sl_pct,total_trades,winning_trades,losing_trades,win_ratio,priority
 52,BOSCHLTD,0.1,61,37,24,60.66%,2
 53,LT,0.1,72,38,34,52.78%,2
 52,HEROMOTOCO,0.1,81,42,39,51.85%,2
