@@ -17,14 +17,20 @@ import os
 from SmartApi import SmartConnect #or from SmartApi.smartConnect import SmartConnect
 import pyotp
 from logzero import logger
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
+
+
+
 # Static values
 user_type = "USER"
 source_id = "WEB"
-api_key = os.getenv("ANG_ONE_KEY")   
-client_code = os.getenv("CLIENTCODE")
-password = os.getenv("PASSWORD")
+# api_key = os.getenv("ANG_ONE_KEY")   
+api_key = os.environ["ANG_ONE_KEY"]  
+# client_code = os.getenv("CLIENTCODE")
+client_code = os.environ["CLIENTCODE"]
+# password = os.getenv("PASSWORD")
+password = os.environ["PASSWORD"]
 window = 965
 
 # todays_date = datetime.today().strftime("%Y-%m-%d")
@@ -35,7 +41,8 @@ local_ip = socket.gethostbyname(socket.gethostname())
 smartApi = SmartConnect(api_key)
 
 try:
-    token = os.getenv("TOTP_TOKEN")
+    # token = os.getenv("TOTP_TOKEN")    
+    token = os.environ["TOTP_TOKEN"]
     totp = pyotp.TOTP(token).now()
 except Exception as e:
     logger.error("Invalid Token: The provided token is not valid.")

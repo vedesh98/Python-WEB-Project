@@ -43,4 +43,5 @@ jobs:
                     PASSWORD: ${{ secrets.PASSWORD }}
                     TOTP_TOKEN: ${{ secrets.TOTP_TOKEN }}
               run: |
-                    jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_notebook.ipynb
+                    python AngelLiveDataFetch-RsiCalculate.py
+                  #  jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_notebook.ipynb
