@@ -87,7 +87,7 @@ data = res.read()
 data = data.decode("utf-8")
 # print(data)
 
-
+time.sleep(5)
 
 temp = json.loads(data)
 jwtToken = temp["data"]["jwtToken"]
