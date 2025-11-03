@@ -10,7 +10,7 @@ import requests # type: ignore
 import mimetypes
 import json
 import talib
-import gdown
+# import gdown
 import http
 import ssl
 import os
