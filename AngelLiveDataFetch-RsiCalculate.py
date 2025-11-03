@@ -91,7 +91,7 @@ time.sleep(25)
 
 temp = json.loads(data)
 print(temp["data"])
-jwtToken = temp["data"]["jwtToken"]
+jwtToken = temp["data"] #["jwtToken"]
 print(jwtToken)
 
 # user_type = "USER"
