@@ -91,7 +91,7 @@ data = data.decode("utf-8")
 print(data)
 
 
-time.sleep(25)
+# time.sleep(25)
 
 temp = json.loads(data)
 print("temp",temp)
