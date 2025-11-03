@@ -23,6 +23,17 @@ jobs:
                     
                     pip install notebook nbconvert
                     #pip install --upgrade pip pip install ta-lib
+                    pip install ta-lib
+                    pip install requests
+                    pip install numpy
+                    pip install pandas
+                    pip install requests
+                    pip install -r requirements_dev.txt       
+                    pip install pyotp
+                    pip install logzero
+                    pip install websocket-client    
+                    pip uninstall pycrypto
+                    pip install pycryptodome    
                        
 
             - name: Run AngelLiveDataFetch-RsiCalculate.ipynb
