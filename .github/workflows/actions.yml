@@ -36,6 +36,10 @@ jobs:
                     pip install pycryptodome    
 
             - name: Run AngelLiveDataFetch-RsiCalculate.ipynb
-             # env:
+              env: 
+                    ANG_ONE_KEY: ${{ secrets.ANG_ONE_KEY }}
+                    CLIENTCODE: ${{ secrets.CLIENTCODE }}
+                    PASSWORD: ${{ secrets.PASSWORD }}
+                    TOTP_TOKEN: ${{ secrets.TOTP_TOKEN }}
               run: |
                     jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_notebook.ipynb
