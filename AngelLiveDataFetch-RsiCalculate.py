@@ -90,6 +90,7 @@ data = data.decode("utf-8")
 time.sleep(25)
 
 temp = json.loads(data)
+print(temp["data"])
 jwtToken = temp["data"]["jwtToken"]
 print(jwtToken)
 
