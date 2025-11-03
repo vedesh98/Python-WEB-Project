@@ -20,7 +20,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                    python -m 
+                    # python -m 
                     
                     pip install notebook nbconvert
                     pip install --upgrade pip pip install ta-lib
