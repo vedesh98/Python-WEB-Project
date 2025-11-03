@@ -27,10 +27,13 @@ user_type = "USER"
 source_id = "WEB"
 # api_key = os.getenv("ANG_ONE_KEY")   
 api_key = os.environ["ANG_ONE_KEY"]  
+print("api_key",api_key)
 # client_code = os.getenv("CLIENTCODE")
 client_code = os.environ["CLIENTCODE"]
+print("client_code",client_code)
 # password = os.getenv("PASSWORD")
 password = os.environ["PASSWORD"]
+print("password",password)
 window = 965
 
 # todays_date = datetime.today().strftime("%Y-%m-%d")
@@ -85,13 +88,14 @@ conn.request("POST", "/rest/auth/angelbroking/user/v1/loginByPassword", payload,
 res = conn.getresponse()
 data = res.read()
 data = data.decode("utf-8")
-# print(data)
+print(data)
+
 
 time.sleep(25)
 
 temp = json.loads(data)
 print("temp",temp)
-jwtToken = temp["data"] #["jwtToken"]
+jwtToken = temp["data"]["jwtToken"]
 print(jwtToken)
 
 # # user_type = "USER"
