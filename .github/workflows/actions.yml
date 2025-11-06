@@ -4,7 +4,7 @@ on:
     schedule:
         #- cron: '0 16 * * *' # Every day at 4pm UTC
         # - cron: '2 * * * *' # Every day at 4pm UTC
-        - cron: '45 15 * * *' # At 3:45 PM UTC, Monday through Friday
+        - cron: '* 9 * * *' # At 3:45 PM UTC, Monday through Friday
     workflow_dispatch:
 
 jobs:
