@@ -1,47 +1,85 @@
-name: Run AngelLiveDataFetch-RsiCalculate Notebook
+name: Run AngelLiveDataFetch and LiveStocks Notebooks
 
 on:
-    schedule:
-        #- cron: '0 16 * * *' # Every day at 4pm UTC
-        # - cron: '2 * * * *' # Every day at 4pm UTC
-       # - cron: 'CRON_TZ=Asia/Kolkata30 15 * * 1-5' # At 3:30 PM IST, Monday through Friday
-        - cron: '10 10 * * 1-5' # At 3:45 PM UTC, Monday through Friday
-    workflow_dispatch:
+  schedule:
+    # live_stocks.ipynb — every 15 min from 9:00–15:30 IST (03:30–10:00 UTC)
+    - cron: '*/15 3-9 * * 1-5'  # Every 15 minutes between 03:00–09:59 UTC (Mon–Fri)
+    - cron: '0,30 10 * * 1-5'   # Additionally run at 10:00 and 10:30 UTC (to cover till 3:30 PM IST)
+
+    # AngelLiveDataFetch-RsiCalculate.ipynb — once daily at 4:00 PM IST (10:30 UTC)
+    - cron: '30 10 * * 1-5'
+
+  workflow_dispatch:
 
 jobs:
-    run-notebook:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  run-live-stocks:
+    if: github.event.schedule == '*/15 3-9 * * 1-5' || github.event.schedule == '0,30 10 * * 1-5' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Set up Python
-              uses: actions/setup-python@v5
-              with:
-                    python-version: '3.12.1'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.1'
 
-            - name: Install dependencies
-              run: |
-                    
-                    pip install notebook nbconvert
-                    pip install ta-lib
-                    pip install requests
-                    # pip install numpy
-                    pip install pandas
-                    pip install -r requirements_dev.txt       
-                    pip install pyotp
-                    pip install logzero
-                    pip install websocket-client    
-                    pip uninstall pycrypto
-                    pip install pycryptodome    
-                       
+      - name: Install dependencies
+        run: |
+          pip install notebook nbconvert
+          pip install ta-lib
+          pip install requests
+          pip install pandas
+          pip install -r requirements_dev.txt
+          pip install pyotp
+          pip install logzero
+          pip install websocket-client
+          pip uninstall -y pycrypto
+          pip install pycryptodome
 
-            - name: Run AngelLiveDataFetch-RsiCalculate.ipynb
-              env: 
-                    ANG_ONE_KEY: ${{ secrets.ANG_ONE_KEY }}
-                    CLIENTCODE: ${{ secrets.CLIENTCODE }}
-                    PASSWORD: ${{ secrets.PASSWORD }}
-                    TOTP_TOKEN: ${{ secrets.TOTP_TOKEN }}
-              run: |
-                  #  python AngelLiveDataFetch-RsiCalculate.py
-                    jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_notebook.ipynb
+      - name: Run live_stocks.ipynb
+        env:
+          ANG_ONE_KEY: ${{ secrets.ANG_ONE_KEY }}
+          CLIENTCODE: ${{ secrets.CLIENTCODE }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          TOTP_TOKEN: ${{ secrets.TOTP_TOKEN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          jupyter nbconvert --to notebook --execute live_stocks.ipynb --output executed_live_stocks.ipynb
+
+
+  run-angel-notebook:
+    if: github.event.schedule == '30 10 * * 1-5' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.1'
+
+      - name: Install dependencies
+        run: |
+          pip install notebook nbconvert
+          pip install ta-lib
+          pip install requests
+          pip install pandas
+          pip install -r requirements_dev.txt
+          pip install pyotp
+          pip install logzero
+          pip install websocket-client
+          pip uninstall -y pycrypto
+          pip install pycryptodome
+
+      - name: Run AngelLiveDataFetch-RsiCalculate.ipynb
+        env:
+          ANG_ONE_KEY: ${{ secrets.ANG_ONE_KEY }}
+          CLIENTCODE: ${{ secrets.CLIENTCODE }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          TOTP_TOKEN: ${{ secrets.TOTP_TOKEN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          TEST_MODE: ${{ secrets.TEST_MODE }}
+        run: |
+          jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_AngelLiveDataFetch-RsiCalculate.ipynb

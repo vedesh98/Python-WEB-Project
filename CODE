@@ -1,0 +1,35 @@
+import threading
+import time
+import random
+
+# Shared lock object
+api_lock = threading.Lock()
+
+def fetch_stock_data(stock_symbol):
+    """Function executed by each thread."""
+    # Simulate pre-processing work (not rate-limited)
+    time.sleep(random.uniform(0.1, 0.5))
+
+    # Acquire lock before making API call
+    with api_lock:
+        print(f"Fetching data for {stock_symbol}...")
+        # === Make your broker API call here ===
+        # response = broker_api.get_data(stock_symbol)
+        time.sleep(random.uniform(0.5, 1.5))  # simulate API response delay
+        print(f"Done fetching {stock_symbol}")
+
+# Example: list of stocks
+stocks = [f"STOCK_{i}" for i in range(10)]
+
+# Create and start threads
+threads = []
+for stock in stocks:
+    t = threading.Thread(target=fetch_stock_data, args=(stock,))
+    t.start()
+    threads.append(t)
+
+# Wait for all threads to finish
+for t in threads:
+    t.join()
+
+print("✅ All stock data fetched!")
