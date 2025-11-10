@@ -44,6 +44,8 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           TOTP_TOKEN: ${{ secrets.TOTP_TOKEN }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          TEST_MODE: ${{ secrets.TEST_MODE }}
+          
         run: |
           jupyter nbconvert --to notebook --execute live_stocks.ipynb --output executed_live_stocks.ipynb
 
