@@ -34,8 +34,8 @@ jobs:
           pip install pyotp
           pip install logzero
           pip install websocket-client
-          pip uninstall -y pycrypto
-          pip install pycryptodome
+          # pip uninstall -y pycrypto
+          # pip install pycryptodome
 
       - name: Run live_stocks.ipynb
         env:
