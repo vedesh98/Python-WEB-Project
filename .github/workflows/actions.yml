@@ -33,7 +33,7 @@ jobs:
           pip install -r requirements_dev.txt
           pip install pyotp
           pip install logzero
-          pip install websocket-client
+          # pip install websocket-client
           # pip uninstall -y pycrypto
           # pip install pycryptodome
 
@@ -71,7 +71,7 @@ jobs:
           pip install -r requirements_dev.txt
           pip install pyotp
           pip install logzero
-          pip install websocket-client
+          # pip install websocket-client
           # pip uninstall -y pycrypto
           # pip install pycryptodome
 
