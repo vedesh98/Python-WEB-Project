@@ -61,6 +61,7 @@ jobs:
       - name: Install dependencies
         run: |
           # pip install notebook nbconvert
+          pip install python-dotenv
           pip install ta-lib
           pip install requests
           pip install pandas
