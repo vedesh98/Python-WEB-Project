@@ -97,7 +97,7 @@ data = data.decode("utf-8")
 
 temp = json.loads(data)
 jwtToken = temp["data"]["jwtToken"]
-print(jwtToken)
+# print(jwtToken)
 
 
 local_ip = socket.gethostbyname(socket.gethostname())
@@ -154,7 +154,7 @@ def rsi_trend(rsi_values, setup_rsi):
     
 
 
-print(main_df.columns.tolist())
+# print(main_df.columns.tolist())
 
 
 def process_stock(row,processing_count=1):
