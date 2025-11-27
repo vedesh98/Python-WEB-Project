@@ -60,7 +60,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # pip install notebook nbconvert
           pip install python-dotenv
           pip install ta-lib
           pip install requests
@@ -68,9 +67,7 @@ jobs:
           pip install -r requirements_dev.txt
           pip install pyotp
           pip install logzero
-          # pip install websocket-client
-          # pip uninstall -y pycrypto
-          # pip install pycryptodome
+          
 
       - name: Run Daily_Stocks.py
         env:
@@ -81,5 +78,4 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TEST_MODE: ${{ secrets.TEST_MODE }}
         run: |
-          # jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_AngelLiveDataFetch-RsiCalculate.ipynb
           python Daily_Stocks.py
