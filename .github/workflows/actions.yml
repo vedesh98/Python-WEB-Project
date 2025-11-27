@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install notebook nbconvert
+          # pip install notebook nbconvert
           pip install ta-lib
           pip install requests
           pip install pandas
@@ -44,8 +44,8 @@ jobs:
           TEST_MODE: ${{ secrets.TEST_MODE }}
           
         run: |
-          jupyter nbconvert --to notebook --execute live_stocks.ipynb --output executed_live_stocks.ipynb
-
+          # jupyter nbconvert --to notebook --execute live_stocks.ipynb --output executed_live_stocks.ipynb
+          python live_stocks.py
 
   run-angel-notebook:
     if: github.event.schedule == '30 10 * * 1-5' || github.event_name == 'workflow_dispatch'
@@ -82,3 +82,4 @@ jobs:
           TEST_MODE: ${{ secrets.TEST_MODE }}
         run: |
           jupyter nbconvert --to notebook --execute AngelLiveDataFetch-RsiCalculate.ipynb --output executed_AngelLiveDataFetch-RsiCalculate.ipynb
+          
