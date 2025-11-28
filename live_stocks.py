@@ -302,20 +302,20 @@ def format_whatsapp_error(data ,name):
 for _, row in main_df[main_df['priority'] == 2].iterrows():
     process_stock(row)
     
-#fetch only token from error_data
-error_tokens = [item['Token'] for item in error_data]
+# #fetch only token from error_data
+# error_tokens = [item['Token'] for item in error_data]
 
-for token in error_tokens:
-    row = main_df[main_df['token'] == token]
-    process_stock(row, processing_count=2)
+# for token in error_tokens:
+#     row = main_df[main_df['token'] == token]
+#     process_stock(row, processing_count=2)
 
 # # delete duplicate entries in priority_data_01 based on 'Token'
 # priority_data_01 = [dict(t) for t in {tuple(d.items()) for d in priority_data_01}]
 # # delete duplicate entries in error_data based on 'Token'
 # error_data = [dict(t) for t in {tuple(d.items()) for d in error_data}]      
 
-error_data = set(tuple(d.items()) for d in error_data)
-error_data = [dict(t) for t in error_data]
+# error_data = set(tuple(d.items()) for d in error_data)
+# error_data = [dict(t) for t in error_data]
 
 # print("Priority Stocks:", len(priority_data))
 # print("Priority Stocks - 01 Pass:", len(priority_data_01))
@@ -330,9 +330,9 @@ if len(priority_data) > 0:
     requests.get(f"https://api.telegram.org/bot{bot_token}/sendMessage",
                 params={"chat_id": CHAT_ID, "text": msg_p1, "parse_mode": "HTML"})
     
-    msg_p2 = format_whatsapp_report(priority_data_01,'Priority Stocks - 01 Pass')
-    requests.get(f"https://api.telegram.org/bot{bot_token}/sendMessage",
-                params={"chat_id": TEST_ID, "text": msg_p2, "parse_mode": "HTML"})
+    # msg_p2 = format_whatsapp_report(priority_data_01,'Priority Stocks - 01 Pass')
+    # requests.get(f"https://api.telegram.org/bot{bot_token}/sendMessage",
+    #             params={"chat_id": TEST_ID, "text": msg_p2, "parse_mode": "HTML"})
 
 
 
