@@ -291,7 +291,7 @@ def format_whatsapp_error(data ,name):
             lines.append(
                 f"\n🔹 <b>{index+1} {item['Name']}</b>"
                 f"\n   <b>Token: </b> {item['Token']}"
-                f"\n   <b>Standard RSI: </b> {item['Setup_RSI']:.2f}"
+   #             f"\n   <b>Standard RSI: </b> #{item['Setup_RSI']:.2f}"
                 f"\n   <b>Reasone: </b> {item['reasone']}"
             )      
            
