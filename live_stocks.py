@@ -291,7 +291,7 @@ def format_whatsapp_error(data ,name):
             lines.append(
                 f"\n🔹 <b>{index+1} {item['Name']}</b>"
                 f"\n   <b>Token: </b> {item['Token']}"
-   #             f"\n   <b>Standard RSI: </b> #{item['Setup_RSI']:.2f}"
+                f"\n   <b>Standard RSI: </b> #{item['Setup_RSI']:.2f}"
                 f"\n   <b>Reasone: </b> {item['reasone']}"
             )      
            
@@ -308,7 +308,18 @@ error_tokens = [item['Token'] for item in error_data]
 for token in error_tokens:
     row = main_df[main_df['token'] == token]
     process_stock(row, processing_count=2)
-    
+
+# # delete duplicate entries in priority_data_01 based on 'Token'
+# priority_data_01 = [dict(t) for t in {tuple(d.items()) for d in priority_data_01}]
+# # delete duplicate entries in error_data based on 'Token'
+# error_data = [dict(t) for t in {tuple(d.items()) for d in error_data}]      
+
+error_data = set(tuple(d.items()) for d in error_data)
+error_data = [dict(t) for t in error_data]
+
+# print("Priority Stocks:", len(priority_data))
+# print("Priority Stocks - 01 Pass:", len(priority_data_01))
+# print("Error Stocks:", len(error_data))
 # Telegram Message trigger logic
 if len(priority_data) > 0:
     msg = f"📊 <b>Live Stock: {todays_date}</b>"
