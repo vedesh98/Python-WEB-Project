@@ -119,8 +119,6 @@ headers = {
     'Authorization': authToken ,
 }
 
-
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(current_dir, "Main_df.csv")
 
@@ -128,7 +126,7 @@ main_df = pd.read_csv(file_path)
 
 
 # Step 2: Function to fetch daily candle data from API
-def fetch_candle_data(symbol,interval='ONE_DAY'):
+def fetch_candle_data(symbol,interval='ONE_DAY',error_reprocess=False):
   
     payload = '''{\r\n     \"exchange\": \"NSE\",\r\n
           \"symboltoken\": \"'''+str(symbol)+'''\",\r\n     \"interval\": \"'''+str(interval)+'''\",\r\n
@@ -143,6 +141,9 @@ def fetch_candle_data(symbol,interval='ONE_DAY'):
     json_data = json_data['data']
     
     if not json_data:
+      if error_reprocess == False:
+        time.sleep(0.4)
+        return fetch_candle_data(symbol, interval, True)
       raise json_data['message']
     return json_data
   
@@ -154,9 +155,7 @@ def rsi_trend(rsi_values, setup_rsi):
     
 
 
-# print(main_df.columns.tolist())
-
-
+# Fecth candel data and Calculate RSI for each stock 
 def process_stock(row,processing_count=1):
     # error_data = []
     time.sleep(0.4)
@@ -231,7 +230,9 @@ def process_stock(row,processing_count=1):
 
 
         if priority == 2:
-            if rsi_trend(last_2_rsi_daily, rsi):
+            # if rsi_trend(last_2_rsi_daily, rsi):
+            # Check RSI breakout condition
+            if last_2_rsi_daily[-1] >= rsi and  last_2_rsi_daily[-2] < rsi:
                 priority_data.append({                    
                     'Name': name,
                     'Token': token,
@@ -241,15 +242,15 @@ def process_stock(row,processing_count=1):
                     'win_ratio': win_ratio,
 
                 })
-                if processing_count > 1:
-                    priority_data_01.append({                    
-                        'Name': name,       
-                        'Token': token,
-                        'Setup_RSI': rsi,
-                        'Daily_RSI': daily_rsi,
-                        'yesterday_RSI': last_2_rsi_daily[-2],  
-                        'win_ratio': win_ratio,
-                    })
+                # if processing_count > 1:
+                #     priority_data_01.append({                    
+                #         'Name': name,       
+                #         'Token': token,
+                #         'Setup_RSI': rsi,
+                #         'Daily_RSI': daily_rsi,
+                #         'yesterday_RSI': last_2_rsi_daily[-2],  
+                #         'win_ratio': win_ratio,
+                #     })
 
     except Exception as e:
         error_data.append({
@@ -262,7 +263,7 @@ def process_stock(row,processing_count=1):
         
 
 
-    
+# Formate stocks into message to send via Telegram/whatsapp
 def format_whatsapp_report(data ,name):
     
     lines = [f"📊 <b>{name}</b>"]
@@ -280,6 +281,7 @@ def format_whatsapp_report(data ,name):
            
     return "\n".join(lines) 
 
+# Formate error stocks into message to send via Telegram/whatsapp
 def format_whatsapp_error(data ,name):
     
     lines = [f"📊 <b>{name}</b>"]
@@ -302,24 +304,7 @@ def format_whatsapp_error(data ,name):
 for _, row in main_df[main_df['priority'] == 2].iterrows():
     process_stock(row)
     
-# #fetch only token from error_data
-# error_tokens = [item['Token'] for item in error_data]
 
-# for token in error_tokens:
-#     row = main_df[main_df['token'] == token]
-#     process_stock(row, processing_count=2)
-
-# # delete duplicate entries in priority_data_01 based on 'Token'
-# priority_data_01 = [dict(t) for t in {tuple(d.items()) for d in priority_data_01}]
-# # delete duplicate entries in error_data based on 'Token'
-# error_data = [dict(t) for t in {tuple(d.items()) for d in error_data}]      
-
-# error_data = set(tuple(d.items()) for d in error_data)
-# error_data = [dict(t) for t in error_data]
-
-# print("Priority Stocks:", len(priority_data))
-# print("Priority Stocks - 01 Pass:", len(priority_data_01))
-# print("Error Stocks:", len(error_data))
 # Telegram Message trigger logic
 if len(priority_data) > 0:
     msg = f"📊 <b>Live Stock: {todays_date}</b>"
@@ -330,11 +315,6 @@ if len(priority_data) > 0:
     requests.get(f"https://api.telegram.org/bot{bot_token}/sendMessage",
                 params={"chat_id": CHAT_ID, "text": msg_p1, "parse_mode": "HTML"})
     
-    # msg_p2 = format_whatsapp_report(priority_data_01,'Priority Stocks - 01 Pass')
-    # requests.get(f"https://api.telegram.org/bot{bot_token}/sendMessage",
-    #             params={"chat_id": TEST_ID, "text": msg_p2, "parse_mode": "HTML"})
-
-
 
 if len(error_data) > 0:
     error_msg = format_whatsapp_error(error_data,'Error Stocks')
