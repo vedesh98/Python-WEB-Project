@@ -4,7 +4,6 @@ from datetime import datetime
 import socket
 import uuid
 import time
-import requests # type: ignore
 import json
 import talib
 import http
@@ -57,6 +56,13 @@ payload = '''{\n\"clientcode\":\"'''+str(client_code)+'''\"
          ,\n\"password\":\"'''+str(password)+'''\"\n
 		,\n\"totp\":\"'''+str(totp)+'''\"\n
     ,\n\"state\":\"Active\"\n}'''
+
+# Change clientcode, password, totp
+payload = '''{\n\"clientcode\":\"'''+str(client_code)+'''\"
+         ,\n\"password\":\"'''+str(password)+'''\"\n
+		,\n\"totp\":\"'''+str(totp)+'''\"\n
+    ,\n\"state\":\"Active\"\n}'''
+
 
 headers = {
     'Content-Type': 'application/json',
@@ -418,6 +424,62 @@ def format_whatsapp_40_report(data ,name):
            
     return "\n".join(lines) 
 
+
+def format_priority_table(data, title):
+#     if len(data) == 0:
+#         return f"📊 <b>{title} : 0 Stocks</b>"
+
+#     # Header
+#     table = [
+#         "📊 <b>{}</b>".format(title),
+#         "<pre>",
+#         "{:<3} {:<15} {:>8} {:>12} {:>12}".format("No", "Name", "Todays RSI", "Yest. RSI", "Std. RSI"),
+#         "-" * 55
+#     ]
+
+#     # Rows
+#     for i, item in enumerate(data, start=1):
+#         table.append(
+#             "{:<3} {:<15} {:>8.2f} {:>12.2f} {:>12.2f}".format(
+#                 i,
+#                 item['Name'][:15],
+#                 item['Daily_RSI'],
+#                 item['yesterday_RSI'],
+#                 item['Setup_RSI'],
+#             )
+#         )
+
+#     table.append("</pre>")
+#     return "\n".join(table)
+
+
+
+# def format_priority_grid(data, title):
+    if len(data) == 0:
+        return f"📊 <b>{title} : 0 Stocks</b>"
+
+    header = f"📊 <b>{title}</b>\n<pre>"
+
+    # Column titles
+    top_border = "┌────┬────────────────┬────────┬────────────┬────────────┐"
+    header_row = "│ No │ Name           │   RSI  │ Yest_RSI   │ Std_RSI    │"
+    mid_border = "├────┼────────────────┼────────┼────────────┼────────────┤"
+    bottom_border = "└────┴────────────────┴────────┴────────────┴────────────┘"
+
+    rows = []
+    for idx, item in enumerate(data, start=1):
+        rows.append(
+            "│ {:<2} │ {:<14} │ {:>6.2f} │ {:>10.2f} │ {:>10.2f} │".format(
+                idx,
+                item['Name'][:14],
+                item['Daily_RSI'],
+                item['yesterday_RSI'],
+                item['Setup_RSI']
+            )
+        )
+
+    return "\n".join([header, top_border, header_row, mid_border, *rows, bottom_border, "</pre>"])
+
 # Telegram Message trigger logic
 msg = f"📊 <b>Daily Report: {todays_date}</b>"
 requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
@@ -432,7 +494,7 @@ msg_p2 = format_whatsapp_report(priority_watch_data,'Priority Stocks to be track
 requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
              params={"chat_id": CHAT_ID, "text": msg_p2, "parse_mode": "HTML"})
 
-msg_t = format_whatsapp_report(output_data ,'Treading Stocks')
+msg_t = format_whatsapp_report(output_data,'Treading Stocks')
 requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
              params={"chat_id": CHAT_ID, "text": msg_t, "parse_mode": "HTML"})
 
