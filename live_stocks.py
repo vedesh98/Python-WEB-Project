@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
 # Static values
 user_type = "USER"
 source_id = "WEB"  
