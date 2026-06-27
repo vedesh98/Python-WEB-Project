@@ -2,6 +2,7 @@ attrs==23.1.0
 autobahn==23.6.2
 Automat==22.10.0
 certifi==2023.5.7
+smartapi-python==1.4.8
 cffi==1.15.1
 charset-normalizer==3.1.0
 constantly==15.1.0
@@ -21,10 +22,15 @@ rdflib-jsonld==0.6.2
 requests==2.31.0
 simplejson==3.19.1
 six==1.16.0
-smartapi-python==1.4.8
 Twisted==22.10.0
 txaio==23.1.1
 typing_extensions==4.6.3
 urllib3==2.0.3
 websocket-client==1.8.0
 zope.interface==6.0
+pandas>=1.3.0
+numpy>=1.21.0
+yfinance>=0.2.0
+talib>=0.4.20
+requests>=2.28.0
+python-dotenv>=0.21.0
