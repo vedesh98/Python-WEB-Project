@@ -79,3 +79,4 @@ jobs:
           TEST_MODE: ${{ secrets.TEST_MODE }}
         run: |
           python Daily_Stocks.py
+          python Monthly_Stocks_yfinance.py
