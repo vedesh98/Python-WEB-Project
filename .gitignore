@@ -24,7 +24,6 @@ bhavanse.py
 Rsi_treads
 Daily_Stocks_FIXED.py
 filtered_profitable_stocks.csv
-Monthly_Stocks_yfinance.py
 nifty500_single_summary_all_data.csv
 nifty500_single_summary_last_3months.csv
 nseindia_nse.py
