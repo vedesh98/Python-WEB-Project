@@ -330,7 +330,7 @@ print("=" * 70)
 # Process each stock
 for idx, (_, row) in enumerate(main_df.iterrows(), 1):
     
-    time.sleep(2)  # Rate limiting
+    time.sleep(30)  # Rate limiting
     
     priority = row['priority']
     name = row['Symbol']
