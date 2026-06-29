@@ -78,5 +78,5 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TEST_MODE: ${{ secrets.TEST_MODE }}
         run: |
-          python Daily_Stocks.py
+          python Daily_Stocks_yfinance.py
           python Monthly_Stocks_yfinance.py
