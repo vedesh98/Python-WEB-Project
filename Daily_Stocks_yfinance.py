@@ -114,6 +114,8 @@ def fetch_candle_data_yfinance(symbol, interval='1d'):
 
 
         df = yf.Ticker(ticker_symbol).history(period=period, interval=interval)
+
+        time.sleep(2)  
         df['RSI_14'] = talib.RSI(df['Close'], timeperiod=14)
         df.reset_index(inplace=True)
         
@@ -330,7 +332,7 @@ print("=" * 70)
 # Process each stock
 for idx, (_, row) in enumerate(main_df.iterrows(), 1):
     
-    time.sleep(30)  # Rate limiting
+    time.sleep(0.5)  # Rate limiting
     
     priority = row['priority']
     name = row['Symbol']
